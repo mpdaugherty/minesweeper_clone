@@ -33,7 +33,10 @@ define([
         this.$elt.bind('contextmenu', function (e) { e.preventDefault(); return false; });
     };
     Cell.prototype.addBomb = function() {
+        var changed = !this.hasBomb;
         this.hasBomb = true;
+
+        return changed;
     };
     Cell.prototype.getNeighbors = function() {
         var neighbors = [];
@@ -73,10 +76,14 @@ define([
             }
         } else if (this.hasBomb) {
             this.$elt.addClass('exploded');
+            this.board.lose();
+            return;
         } else if (number) {
             var $numElt = $('<div class="number">'+number+'</div>');
             this.$elt.append($numElt);
         }
+
+//        this.board.checkWin();
     };
     Cell.prototype.toggleFlag = function () {
         this.flagged = !this.flagged;
@@ -84,8 +91,10 @@ define([
     };
 
 
-    var Board = function(size) {
+    var Board = function(size, numBombs) {
         this.size = size;
+        // Just in case the numBombs is impossible to fulfill
+        this.numBombs = Math.min(numBombs, size*size);
         this.rows = [];
         var row;
 
@@ -94,6 +103,16 @@ define([
             this.rows.push(row);
             for (var j=0; j<size; j++) {
                 row.push(new Cell(this, j, i));
+            }
+        }
+
+        var changed = false;
+        for (i=0; i<numBombs; i++) {
+            changed = false;
+            while (!changed) {
+                var randX = Math.floor(Math.random() * this.size);
+                var randY = Math.floor(Math.random() * this.size);
+                changed = this.getCell(randX, randY).addBomb();
             }
         }
     };
@@ -110,15 +129,42 @@ define([
                 row[j].init($rowdiv);
             }
         }
-
-        for (i=0; i<10; i++) {
-            var randX = Math.floor(Math.random() * this.size);
-            var randY = Math.floor(Math.random() * this.size);
-            this.getCell(randX, randY).addBomb();
-        }
     };
     Board.prototype.getCell = function(x, y) {
         return this.rows[y][x];
+    };
+    Board.prototype.lose = function () {
+        if (this.lost) {
+            return;
+        }
+        this.lost = true;
+
+        $.each(this.rows, function () {
+            $.each(this, function() {
+                this.clear();
+            });
+        });
+
+        alert('you lose!');
+    };
+    Board.checkWin = function () {
+        if (this.lost) {
+            return;
+        }
+
+        var numUncleared = 0;
+        for (var x = 0; x < this.size(); x++) {
+            for (var y = 0; y < this.size(); y++) {
+                numUncleared += this.getCell(x, y).isCleared ? 0 : 1;
+                if (numUncleared > this.numBombs) {
+                    alert(numUncleared);
+                    return false;
+                }
+            }
+        }
+
+        alert('you win!');
+        return true;
     };
 
     var exports = {};
