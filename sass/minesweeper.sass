@@ -1,0 +1,198 @@
+//// FRAMEWORKS ////
+
+@import "compass"
+@import "compass/reset"
+@import "compass/css3/user-interface"
+@import "isotope"
+
+
+//// VARIABLES ////
+
+$beige: #f3f0eb
+$red: #a73400
+$blue: desaturate(adjust-hue($red, -175), 20%)
+$green: desaturate(adjust-hue($red, -275), 40%)
+$dark-red: #5e0001
+$text-color: #222 //#410006
+
+
+//// MIXINS ////
+
+=column($count: 1)
+  @extend %column
+  width: 60px * $count + 20px * ($count - 1)
+
+//// EXTENDABLES ////
+
+%sans-serif
+  font-family: ProximaNova, helvetica, arial, sans-serif
+
+%column
+  float: left
+  padding: 10px
+
+%text-field
+  background: white
+  border: 1px darken(#e1dcd4, 10%) solid
+  color: #602808
+  float: left
+  font-family: inherit
+  font-size: 12px
+  height: 12px
+  line-height: 16px
+  padding: 4px 5px
+  +border-radius(3px)
+  +box-shadow(rgba(white, 0.5) 0 1px 0, rgba(#602808, 0.1) 0 1px 3px inset)
+
+  &::-webkit-input-placeholder
+    color: #d8cbcb
+    line-height: 16px
+
+
+//// BASE STYLING ////
+
+html
+  font-size: 14px
+
+a,
+a:hover
+  color: $red
+
+button,
+input,
+textarea
+  @extend %sans-serif
+
+::-webkit-file-upload-button
+  font-family: inherit
+
+#Messages
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  z-index: 1000
+
+  .message
+    text-align: center
+    display: none
+    margin-bottom: 0px
+
+    a.close
+      float: initial
+      right: 0
+      margin-left: 5px
+
+//// LAYOUT ////
+
+html
+  height: 100%
+
+body
+  @extend %sans-serif
+  background: white //$beige
+  color: $text-color
+  height: 100%
+  position: relative
+  -webkit-font-smoothing: antialiased
+
+h1
+  margin-top: 35px
+  padding-bottom: 3px
+  font-size: 35px
+  border-bottom: 2px solid $text-color
+  text-align: center
+
+h3
+  font-weight: bold
+
+.board
+  .row
+    +clearfix
+
+  .cell
+    float: left
+    width: 30px
+    height: 30px
+    background-color: #999
+    border: 4px solid
+    border-top-color: #eee
+    border-bottom-color: #555
+    border-right-color: #555
+    border-left-color: #eee
+    cursor: pointer
+
+    &.exploded
+      background-color: f00
+
+    &.revealed
+      background-color: #bbb
+      cursor: default
+      border: 2px solid
+      width: 34px
+      height: 34px
+      border-top-color: #ccc
+      border-bottom-color: #777
+      border-right-color: #777
+      border-left-color: #ccc
+
+      &:active
+        background-color: #bbb
+        border-top-color: #ccc
+        border-bottom-color: #777
+        border-right-color: #777
+        border-left-color: #ccc
+
+    &:active
+      background-color: #999
+      border-top-color: #555
+      border-bottom-color: #eee
+      border-right-color: #eee
+      border-left-color: #555
+
+    .number
+      color: $red
+      width: 100%
+      height: 100%
+      line-height: 30px
+      text-align: center
+      font-size: 25px
+
+    .bomb
+      width: 20px
+      height: 20px
+      background-color: #e11
+      margin: 5px auto
+
+    .flag
+      position: relative
+
+      .flag
+        width: 0px
+        height: 0px
+        border-left: 10px solid $red
+        border-bottom: 5px solid #999
+        border-top: 5px solid #999
+        top: 5px
+        left: 13px
+        position: absolute
+
+      .pole
+        position: absolute
+        left: 11px
+        top: 5px
+        height: 20px
+        width: 2px
+        background-color: #555
+
+
+
+//// MODULES ////
+
+//@import "home"
+//@import "login"
+//@import "internal"
+//@import "invitation"
+//@import "positions"
+//@import "applications"
+//@import "companies"
