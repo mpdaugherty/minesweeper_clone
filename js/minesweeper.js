@@ -8,12 +8,29 @@ define([
         this.y = y;
     };
     Cell.prototype.init = function(row) {
-        this.$elt = $('<div class="cell"></div>');
+        this.$elt = $('<div class="cell">' +
+        '<div class="flag">' +
+          '<div class="top">' +
+          '</div>' +
+          '<div class="pole"></div>' +
+        '</div></div>');
 
         this.$row = $(row);
         this.$row.append(this.$elt);
 
-        this.$elt.click(this.clear.bind(this));
+        this.$elt.mouseup(
+            function (event) {
+                if (event.which == 1) {
+                    this.clear();
+                }
+                if (event.which > 1) {
+                    this.toggleFlag();
+                }
+
+                event.preventDefault();
+            }.bind(this));
+        // We have to disable the context menu so right clicks work
+        this.$elt.bind('contextmenu', function (e) { e.preventDefault(); return false; });
     };
     Cell.prototype.addBomb = function() {
         this.hasBomb = true;
@@ -31,19 +48,39 @@ define([
 
         return neighbors;
     };
+    Cell.prototype.getNumber = function () {
+        var count = 0;
+        var neighbors = this.getNeighbors();
+        for (var i=0; i < neighbors.length; i++) {
+            count += neighbors[i].hasBomb ? 1 : 0;
+        }
+        return count;
+    };
     Cell.prototype.clear = function () {
-        if (this.$elt.hasClass('revealed')) {
-            // This cell has already been opened once, so skip it.
+        if (this.$elt.hasClass('revealed') || this.flagged) {
+            // This cell has already been opened once or is flagged,
+            // so skip it.
             return;
         }
 
         this.$elt.addClass('revealed');
+
+        var number = this.getNumber();
         var neighbors = this.getNeighbors();
-        if (!this.number && !this.hasBomb) {
+        if (!number && !this.hasBomb) {
             for (var i=0; i<neighbors.length; i++) {
                 neighbors[i].clear();
             }
+        } else if (this.hasBomb) {
+            this.$elt.addClass('exploded');
+        } else if (number) {
+            var $numElt = $('<div class="number">'+number+'</div>');
+            this.$elt.append($numElt);
         }
+    };
+    Cell.prototype.toggleFlag = function () {
+        this.flagged = !this.flagged;
+        this.$elt.find('.flag').toggle();
     };
 
 
@@ -64,13 +101,20 @@ define([
         this.$elt = $(element);
         var row, $rowdiv;
 
-        for (var i=0; i<this.rows.length; i++) {
+        var i, j;
+        for (i=0; i<this.rows.length; i++) {
             $rowdiv = $('<div class="row"></div>');
             this.$elt.append($rowdiv);
             row = this.rows[i];
-            for (var j=0; j<row.length; j++) {
+            for (j=0; j<row.length; j++) {
                 row[j].init($rowdiv);
             }
+        }
+
+        for (i=0; i<10; i++) {
+            var randX = Math.floor(Math.random() * this.size);
+            var randY = Math.floor(Math.random() * this.size);
+            this.getCell(randX, randY).addBomb();
         }
     };
     Board.prototype.getCell = function(x, y) {
