@@ -66,6 +66,7 @@ define([
             return;
         }
 
+        this.isCleared = true;
         this.$elt.addClass('revealed');
 
         var number = this.getNumber();
@@ -83,7 +84,7 @@ define([
             this.$elt.append($numElt);
         }
 
-//        this.board.checkWin();
+        this.board.checkWin();
     };
     Cell.prototype.toggleFlag = function () {
         this.flagged = !this.flagged;
@@ -147,17 +148,16 @@ define([
 
         alert('you lose!');
     };
-    Board.checkWin = function () {
+    Board.prototype.checkWin = function () {
         if (this.lost) {
             return;
         }
 
         var numUncleared = 0;
-        for (var x = 0; x < this.size(); x++) {
-            for (var y = 0; y < this.size(); y++) {
+        for (var x = 0; x < this.size; x++) {
+            for (var y = 0; y < this.size; y++) {
                 numUncleared += this.getCell(x, y).isCleared ? 0 : 1;
                 if (numUncleared > this.numBombs) {
-                    alert(numUncleared);
                     return false;
                 }
             }
