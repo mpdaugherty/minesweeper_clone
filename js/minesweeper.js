@@ -8,12 +8,12 @@ define([
         this.y = y;
     };
     Cell.prototype.init = function(row) {
-        this.$elt = $('<div class="cell">' +
-        '<div class="flag">' +
-          '<div class="top">' +
-          '</div>' +
-          '<div class="pole"></div>' +
-        '</div></div>');
+        this.$elt = $(
+            '<div class="cell">' +
+                '<div class="flag">' +
+                    '<div class="top"></div>' +
+                    '<div class="pole"></div>' +
+            '</div></div>');
 
         this.$row = $(row);
         this.$row.append(this.$elt);
@@ -30,20 +30,32 @@ define([
                 event.preventDefault();
             }.bind(this));
         // We have to disable the context menu so right clicks work
-        this.$elt.bind('contextmenu', function (e) { e.preventDefault(); return false; });
+        this.$elt.bind('contextmenu',
+                       function (e) {
+                           e.preventDefault();
+                           return false;
+                       });
     };
     Cell.prototype.addBomb = function() {
+        // Return whether a bomb was added or if this cell already had
+        // a bomb.  This way, we can accurately add the right number of
+        // bombs to the board without double-adding and therefore miscounting.
         var changed = !this.hasBomb;
         this.hasBomb = true;
 
         return changed;
     };
     Cell.prototype.getNeighbors = function() {
+        // It's not great to loop over everything every time, but
+        // the board is small and it's easy.
         var neighbors = [];
         var i, j;
         for (i = this.x-1; i <= this.x+1; i++) {
             for (j = this.y-1; j <= this.y+1; j++) {
-                if ((i >= 0) && (i < this.board.size) && (j >= 0) && (j < this.board.size)) {
+                if ((i >= 0)
+                    && (i < this.board.size)
+                    && (j >= 0)
+                    && (j < this.board.size)) {
                     neighbors.push(this.board.getCell(i, j));
                 }
             }
@@ -72,18 +84,24 @@ define([
         var number = this.getNumber();
         var neighbors = this.getNeighbors();
         if (!number && !this.hasBomb) {
+            // If this cell is empty, we can reveal the neighboring cells
+            // because the user would naturally click all of them anyway.
             for (var i=0; i<neighbors.length; i++) {
                 neighbors[i].clear();
             }
         } else if (this.hasBomb) {
+            // Lose the game if this cell has a bomb
             this.$elt.addClass('exploded');
             this.board.lose();
             return;
         } else if (number) {
+            // Otherwise, just display the number of neighboring bombs
             var $numElt = $('<div class="number">'+number+'</div>');
             this.$elt.append($numElt);
         }
 
+        // Check wether all the bombs have been found and all the safe squares
+        // cleared.
         this.board.checkWin();
     };
     Cell.prototype.toggleFlag = function () {
@@ -92,6 +110,11 @@ define([
     };
 
 
+    /**
+     * This is a minesweeper board.  It is a square of size `size`.
+     * Within the board, we'll add `numBombs` bombs within random
+     * cells.
+     */
     var Board = function(size, numBombs) {
         this.size = size;
         // Just in case the numBombs is impossible to fulfill
@@ -99,6 +122,7 @@ define([
         this.rows = [];
         var row;
 
+        // Create the grid
         for (var i=0; i<size; i++) {
             row = [];
             this.rows.push(row);
@@ -107,6 +131,7 @@ define([
             }
         }
 
+        // Add all the bombs
         var changed = false;
         for (i=0; i<numBombs; i++) {
             changed = false;
@@ -118,6 +143,7 @@ define([
         }
     };
     Board.prototype.init = function Board_init(element){
+        // Set up the HTML elements for the board
         this.$elt = $(element);
         var row, $rowdiv;
 
@@ -132,6 +158,8 @@ define([
         }
     };
     Board.prototype.getCell = function(x, y) {
+        // This is not particularly safe, but I know it's only used by
+        // trusted code...
         return this.rows[y][x];
     };
     Board.prototype.lose = function () {
@@ -140,13 +168,14 @@ define([
         }
         this.lost = true;
 
+        // Reveal all the cells
         $.each(this.rows, function () {
             $.each(this, function() {
                 this.clear();
             });
         });
 
-        alert('you lose!');
+        alert('You lose!');
     };
     Board.prototype.checkWin = function () {
         if (this.lost) {
@@ -163,7 +192,7 @@ define([
             }
         }
 
-        alert('you win!');
+        alert('You win!');
         return true;
     };
 

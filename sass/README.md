@@ -1,5 +1,4 @@
-# SASS Sources for HackerHires
-
+# SASS Sources
 
 ## Setup
 
@@ -16,7 +15,7 @@ Run Compass to compile in the background:
     cd sass
     bundle exec compass watch
 
-You’ll find the CSS output at `hiring_site/static/css/hackerhires.css`.
+You’ll find the CSS output at `css/minesweeper.css`.
 
 Kassomat makes use of those frameworks/tools:
 
