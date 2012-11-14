@@ -1,0 +1,290 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+html {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+q, blockquote {
+  quotes: none;
+}
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+a img {
+  border: none;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+/**** Isotope Filtering ****/
+.isotope-item {
+  z-index: 2;
+}
+
+.isotope-hidden.isotope-item {
+  pointer-events: none;
+  z-index: 1;
+}
+
+/**** Isotope CSS3 transitions ****/
+.isotope,
+.isotope .isotope-item {
+  -webkit-transition-duration: 0.8s;
+  -moz-transition-duration: 0.8s;
+  -ms-transition-duration: 0.8s;
+  -o-transition-duration: 0.8s;
+  transition-duration: 0.8s;
+}
+
+.isotope {
+  -webkit-transition-property: height, width;
+  -moz-transition-property: height, width;
+  -ms-transition-property: height, width;
+  -o-transition-property: height, width;
+  transition-property: height, width;
+}
+
+.isotope .isotope-item {
+  -webkit-transition-property: -webkit-transform, opacity;
+  -moz-transition-property: -moz-transform, opacity;
+  -ms-transition-property: -ms-transform, opacity;
+  -o-transition-property: top, left, opacity;
+  transition-property: transform, opacity;
+}
+
+/**** disabling Isotope CSS3 transitions ****/
+.isotope.no-transition,
+.isotope.no-transition .isotope-item,
+.isotope .isotope-item.no-transition {
+  -webkit-transition-duration: 0s;
+  -moz-transition-duration: 0s;
+  -ms-transition-duration: 0s;
+  -o-transition-duration: 0s;
+  transition-duration: 0s;
+}
+
+button,
+input,
+textarea, body {
+  font-family: ProximaNova, helvetica, arial, sans-serif;
+}
+
+html {
+  font-size: 14px;
+}
+
+a,
+a:hover {
+  color: #a73400;
+}
+
+::-webkit-file-upload-button {
+  font-family: inherit;
+}
+
+#Messages {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+#Messages .message {
+  text-align: center;
+  display: none;
+  margin-bottom: 0px;
+}
+#Messages .message a.close {
+  float: initial;
+  right: 0;
+  margin-left: 5px;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  background: white;
+  color: #222222;
+  height: 100%;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+  margin-top: 35px;
+  padding-bottom: 3px;
+  font-size: 35px;
+  border-bottom: 2px solid #222222;
+  text-align: center;
+}
+
+h3 {
+  font-weight: bold;
+}
+
+#AppContainer {
+  text-align: center;
+  padding-top: 20px;
+  position: relative;
+}
+
+#Instructions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 200px;
+  padding: 10px;
+  background-color: #bbbbbb;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  border: 4px solid;
+  border-top-color: #eeeeee;
+  border-bottom-color: #555555;
+  border-right-color: #555555;
+  border-left-color: #eeeeee;
+  text-align: left;
+}
+#Instructions h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+#Instructions ul {
+  list-style: disc;
+  width: 160px;
+  margin: auto;
+}
+#Instructions ul li {
+  margin-bottom: 5px;
+}
+
+.board {
+  display: inline-block;
+}
+.board .row {
+  overflow: hidden;
+  *zoom: 1;
+}
+.board .cell {
+  float: left;
+  width: 30px;
+  height: 30px;
+  background-color: #999999;
+  border: 4px solid;
+  border-top-color: #eeeeee;
+  border-bottom-color: #555555;
+  border-right-color: #555555;
+  border-left-color: #eeeeee;
+  cursor: pointer;
+}
+.board .cell.revealed {
+  background-color: #bbbbbb;
+  cursor: default;
+  border: 2px solid;
+  width: 34px;
+  height: 34px;
+  border-top-color: #cccccc;
+  border-bottom-color: #777777;
+  border-right-color: #777777;
+  border-left-color: #cccccc;
+}
+.board .cell.revealed.exploded {
+  background-color: red;
+}
+.board .cell.revealed.exploded:active {
+  background-color: red;
+}
+.board .cell.revealed:active {
+  background-color: #bbbbbb;
+  border-top-color: #cccccc;
+  border-bottom-color: #777777;
+  border-right-color: #777777;
+  border-left-color: #cccccc;
+}
+.board .cell:active {
+  background-color: #999999;
+  border-top-color: #555555;
+  border-bottom-color: #eeeeee;
+  border-right-color: #eeeeee;
+  border-left-color: #555555;
+}
+.board .cell .number {
+  color: #a73400;
+  width: 100%;
+  height: 100%;
+  line-height: 30px;
+  text-align: center;
+  font-size: 25px;
+}
+.board .cell .bomb {
+  width: 20px;
+  height: 20px;
+  background-color: #ee1111;
+  margin: 5px auto;
+}
+.board .cell .flag {
+  position: relative;
+  display: none;
+}
+.board .cell .flag .top {
+  width: 0px;
+  height: 0px;
+  border-left: 10px solid #a73400;
+  border-bottom: 5px solid #999999;
+  border-top: 5px solid #999999;
+  top: 5px;
+  left: 13px;
+  position: absolute;
+}
+.board .cell .flag .pole {
+  position: absolute;
+  left: 11px;
+  top: 5px;
+  height: 20px;
+  width: 2px;
+  background-color: #555555;
+}
